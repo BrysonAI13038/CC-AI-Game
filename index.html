@@ -27,16 +27,34 @@
       display: block;
       cursor: crosshair;
       touch-action: none;
-      box-shadow: 0 25px 80px #000a;
+      box-shadow: 0 40px 120px rgba(2,6,23,0.6), inset 0 -8px 30px rgba(0,0,0,0.25);
+      border-radius: 10px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), transparent 40%);
     }
 
     .hint {
       position: fixed;
       bottom: 14px;
       color: #cbd5e1;
-      font-size: 12px;
+      font-size: 13px;
       opacity: 0.7;
       pointer-events: none;
+      text-shadow: 0 1px 0 rgba(0,0,0,0.6);
+    }
+    
+    /* subtle glow behind canvas */
+    body::before {
+      content: "";
+      position: fixed;
+      left: 50%;
+      top: 8%;
+      width: 900px;
+      height: 420px;
+      transform: translateX(-50%);
+      background: radial-gradient(closest-side, rgba(84,140,255,0.06), transparent 60%);
+      pointer-events: none;
+      filter: blur(24px);
+      z-index: 0;
     }
   </style>
 </head>

@@ -26,3 +26,9 @@ Notes:
 
 - `game.js` contains the game code (it was extracted from `index.html`) so breakpoints in VS Code map cleanly.
 - If breakpoints show as unverified, ensure the server is running and the `url` in `.vscode/launch.json` matches the address you opened.
+
+Visual improvements added:
+
+- Rim glow and ball trail for nicer visuals.
+- HUD rounded panel and subtle background glow.
+
