@@ -166,6 +166,25 @@ function update(dt) {
     }
   }
 
+  // Fallback scoring: if ball goes below rim inside hoop x-range, count as make
+  if (!ball.made) {
+    const insideX = Math.abs(ball.x - hoop.x) < hoop.r - ball.r * 0.55;
+    if (ball.y > hoop.y + 6 && insideX && ball.vy > -120) {
+      ball.made = true;
+      score += 1;
+      streak++;
+      message = streak > 1 ? `${streak} IN A ROW!` : "SWISH!";
+      flash = 0.28;
+
+      if (score >= 12) {
+        gameOver = true;
+        ball.flying = false;
+        message = "YOU WIN!";
+        flash = 0.8;
+      }
+    }
+  }
+
   const boardX = hoop.x + 58;
 
   if (
