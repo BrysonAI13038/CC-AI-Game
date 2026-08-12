@@ -25,6 +25,7 @@ let time;
 let last;
 let message;
 let flash;
+let gameOver = false;
 
 function reset() {
   ball = {
@@ -53,6 +54,7 @@ function reset() {
   time = 0;
   message = "AIM AT THE MOVING RIM";
   flash = 0;
+  gameOver = false;
 }
 
 reset();
@@ -88,7 +90,7 @@ addEventListener("keydown", (e) => {
 });
 
 function shoot() {
-  if (ball.flying) return;
+  if (ball.flying || gameOver) return;
 
   const dx = mouse.x - ball.x;
   const dy = mouse.y - ball.y;
@@ -149,11 +151,19 @@ function update(dt) {
 
   if (!ball.made && ballPassedThroughRim) {
     ball.made = true;
-    score += 2;
+    score += 1;
     streak++;
 
     message = streak > 1 ? `${streak} IN A ROW!` : "SWISH!";
     flash = 0.28;
+
+    // check win
+    if (score >= 12) {
+      gameOver = true;
+      ball.flying = false;
+      message = "YOU WIN!";
+      flash = 0.8;
+    }
   }
 
   const boardX = hoop.x + 58;
@@ -188,6 +198,8 @@ function update(dt) {
     if (!ball.made) {
       streak = 0;
       message = "MISS — LINE UP THE NEXT ONE";
+      // reset score on miss
+      score = 0;
     }
   }
 }
@@ -421,6 +433,27 @@ function render() {
   drawPlayer();
   drawBall();
   drawHUD();
+
+  if (gameOver) {
+    // overlay
+    ctx.save();
+    ctx.fillStyle = "rgba(2,6,23,0.7)";
+    ctx.fillRect(0, 0, W, H);
+
+    ctx.textAlign = "center";
+    ctx.fillStyle = "#fff";
+    ctx.font = "900 72px system-ui";
+    ctx.shadowColor = "rgba(255,220,120,0.2)";
+    ctx.shadowBlur = 24;
+    ctx.fillText("YOU WIN!", W / 2, H / 2 - 10);
+
+    ctx.shadowBlur = 0;
+    ctx.font = "600 20px system-ui";
+    ctx.fillStyle = "#f1f5f9";
+    ctx.fillText("Press R to play again", W / 2, H / 2 + 36);
+    ctx.textAlign = "left";
+    ctx.restore();
+  }
 }
 
 function loop(now) {
